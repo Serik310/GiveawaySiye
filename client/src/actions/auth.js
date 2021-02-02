@@ -44,7 +44,6 @@ export const login = (email, password) => dispatch => {
 export const loadUser = () => (dispatch, getState) => {
     if('Authorization' in tokenConfig(getState)['headers']) {
         dispatch({type: USER_LOADING});
-    }
     axios
         .get('http://127.0.0.1:8000/auth-api/user', tokenConfig(getState))
         .then(response => {
@@ -56,6 +55,7 @@ export const loadUser = () => (dispatch, getState) => {
         .catch(error => {
                 console.log(error)
             })
+    }
 }
 
 export const logout = () => (dispatch, getState) => {
@@ -64,14 +64,14 @@ export const logout = () => (dispatch, getState) => {
     })
 }
 
-export const register = (username, email, password, first_name, last_name, phone) => dispatch => {
+export const register = (email, password, first_name, last_name, phone) => dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
 
-    const body = JSON.stringify({username, email, password, first_name, last_name, phone})
+    const body = JSON.stringify({email, password, first_name, last_name, phone})
 
     axios
         .post('http://127.0.0.1:8000/auth-api/signup/', body, config)

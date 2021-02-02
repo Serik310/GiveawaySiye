@@ -7,7 +7,6 @@ from accounts.models import Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
     
-    username = serializers.CharField(source='user.username')
     email = serializers.EmailField(source='user.email')
     password = serializers.CharField(source='user.password', min_length=6)
 
@@ -15,7 +14,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             'id', 'first_name', 'last_name', 'phone', 
-            'created_at', 'updated_at', 'email','username', 'password')
+            'created_at', 'updated_at', 'email','password')
         read_only_fields = ('created_at', 'updated_at', 'id')
         write_only_fields = ('password')
 
@@ -25,7 +24,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         'email': 'this mail already exists!'
         })
         user = get_user_model().objects.create_user(
-            username=validated_data['user']['username'],
             email=validated_data['user']['email'].lower(),
             password=validated_data['user']['password']
         )

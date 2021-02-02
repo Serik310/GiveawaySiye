@@ -52,7 +52,7 @@ class ProfileViewSet(ModelViewSet):
 
 
 class LoginView(generics.GenericAPIView):
-    serializer = LoginSerializer
+    serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

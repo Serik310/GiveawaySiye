@@ -5,6 +5,10 @@ import CSRFToken from '../../csrftoken.js';
 import { login, register } from '../../actions/auth.js';
 const Login = (props) => {
 
+  const {
+    value
+  } = props
+
   const defaultStateSignIn = {
     'email': '',
     'password': '',
@@ -15,21 +19,13 @@ const Login = (props) => {
     'lastName': '',
     'phone': '',
     'email': '',
-    'username':'',
     'password1': '',
     'password2': '',
   }
 
   const [signInValues, setSignInValues] = useState(defaultStateSignIn)
   const [signUpValues, setSignUpValues] = useState(defaultStateSignUp)
-
-  const [signType, setSignType] = useState(null)
-
-  const handleChangeSignType = (type) => {
-    setSignType(type)
-  }
-
-
+  
   if (props.auth.isAuthenticated &&
     (Object.keys(signInValues).filter(item => signInValues[item] !=='').length ||
       Object.keys(signUpValues).filter(item => signUpValues[item] !=='').length)) {
@@ -38,8 +34,10 @@ const Login = (props) => {
   }
 
   const handleSignInChange = (event) => {
+    console.log(event.target.name)
     let obj = Object.assign({}, signInValues)
     obj[event.target.name] = event.target.value
+    console.log(obj)
     setSignInValues(obj)
   }
 
@@ -62,7 +60,6 @@ const Login = (props) => {
   const submitSignUp = (e) => {
     e.preventDefault()
     props.register(
-      signUpValues['username'],
       signUpValues['email'],
       signUpValues['password'],
       signUpValues['firstName'],
@@ -84,11 +81,7 @@ const Login = (props) => {
             <div className="row justify-content-center">
               <div className="col-md-12">
                 <div className="form-block">
-                  <div className="mb-4">
-                    <button onClick={() => handleChangeSignType('signIn')}>Sign in</button>
-                    <button onClick={() => handleChangeSignType('signUp')}>Sign up</button>
-                  </div>
-                  {signType === 'signIn' ? (
+                  {props.location.value === 'signIn' ? (
                     <form onSubmit={submitSignIn}>
                         <label for="email">Email</label>
                         <input type="text" className="form-control" id="email" onChange={handleSignInChange} value={signInValues['email'] || ''} name='email'/>
@@ -104,12 +97,6 @@ const Login = (props) => {
                   ) :
                     (
                       <form onSubmit={submitSignUp}>
-                        
-                        <div className="form-group first">
-                          <label for="username">Username</label>
-                          <input type="text" className="form-control" id="email" onChange={handleSignUpChange} value={signUpValues['username'] || ''} name='username'/>
-
-                        </div>
 
                         <div className="form-group first">
                           <label for="email">Email</label>

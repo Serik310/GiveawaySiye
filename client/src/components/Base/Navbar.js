@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UseStyles from '../style.js';
 import { Link } from 'react-router-dom';
+import { logout } from '../../actions/auth.js';
+import auth from '../../reducers/auth.js';
+import { connect } from 'react-redux';
 
-function Navbar() {
+function Navbar(props) {
   const classes = UseStyles();
-
+  console.log(props)
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -20,20 +23,27 @@ function Navbar() {
             <li className="nav-item">
               <Link to={{ pathname: '/history/', fromDashboard: false }} className="nav-link">History</Link>
             </li>
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                User
-                </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a className="dropdown-item" href="#">Profile</a></li>
-                <li><a className="dropdown-item" href="#">Settings</a></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><a className="dropdown-item" href="#">Exit</a></li>
-              </ul>
-            </li>
-            <li>
-              <Link to={{ pathname: '/profile/login/', fromDashboard: false }} className="nav-link">Login</Link>
-            </li>
+            {props.auth.isAuthenticated ? (
+                          <li className="nav-item dropdown">
+                          <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            User
+                            </a>
+                          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><Link to={{ pathname: '/profile/', fromDashboard: false }} className="dropdown-item">Profile</Link></li>
+                            <li><a className="dropdown-item" href="#">Settings</a></li>
+                            <li><hr className="dropdown-divider" /></li>
+                            <li><a className="dropdown-item" href="#">Exit</a></li>
+                          </ul>
+                        </li>
+            ):
+            (
+              <div style={{display: 'inherit'}}>
+            <li><Link to={{ pathname: '/profile/login/', fromDashboard: false, 
+            value: 'signIn' }} className="nav-link" >Login</Link></li>
+            <li><Link to={{ pathname: '/profile/login/', fromDashboard: false,
+            value: 'signUp' }} className="nav-link" >Register</Link></li>
+            </div>
+            )}
           </ul>
         </div>
         <form className="d-flex justify-content-end">
@@ -45,4 +55,8 @@ function Navbar() {
   )
 }
 
-export default Navbar;
+const mapStateToProps = (state) => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, {logout})(Navbar);

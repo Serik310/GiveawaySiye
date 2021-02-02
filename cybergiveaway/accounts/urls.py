@@ -16,7 +16,7 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', obtain_auth_token, name='login'),
     path('user/', UserView.as_view(), name='user'),
     path('', include(router.urls))
 ]

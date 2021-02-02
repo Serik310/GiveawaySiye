@@ -48,7 +48,10 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'giveaway.apps.GiveawayConfig',
     'corsheaders',
+    'axes'
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
