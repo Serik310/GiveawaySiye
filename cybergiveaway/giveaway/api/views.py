@@ -16,6 +16,7 @@ class GiveawayFilter(filters.FilterSet):
         )
     )
 
+
     class Meta:
         model = Giveaway
         fields = {
@@ -42,7 +43,6 @@ class GiveawayViewSet(viewsets.ModelViewSet):
     serializer_class = GiveawaySerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = GiveawayFilter
-
 
     action_to_serializer = {
         "list": GiveawayListRetrieveSerializer,
