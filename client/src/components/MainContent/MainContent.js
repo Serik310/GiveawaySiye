@@ -5,6 +5,7 @@ import ShortTable from './ShortTable.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import Timer from './Coutdown.js';
 
 function TotalInfoPanel() {
     const color_one = {
@@ -38,24 +39,60 @@ function TotalInfoPanel() {
     )
 }
 
-function MainContent() {
+function MainContent(props) {
 
     const classes = UseStyles();
 
-    const phone = <FontAwesomeIcon icon={faPhone} />
-    const google = <FontAwesomeIcon icon={faEnvelope} />
-
     const [giveaways, setGiveaways] = useState([]);
+    const [paidGiveaways, setPaidGiveaways] = useState([]);
 
     useEffect(() => {
-        axios({
-            method: 'GET',
-            url: 'http://127.0.0.1:8000/api/giveaway/',
-        }).then(response => {
-            setGiveaways(response.data)
-        })
+        let is_archived;
+        let q;
+        let cost__lt;
+        let cost__gt
+
+        axios.all([
+            //FIRST AXIOS
+            is_archived = false,
+            q = 'id',
+            cost__lt = 1,
+            cost__gt = -1,
+            axios({
+                method: 'GET',
+                url: 'http://127.0.0.1:8000/api/giveaway/',
+                params: {
+                    is_archived,
+                    q,
+                    cost__gt,
+                    cost__lt,
+                }
+            }).then(response => {
+                setGiveaways(response.data)
+            }),
+
+            //SECOND AXIOS//
+            is_archived = false,
+            cost__gt = 0,
+            axios({
+                method: 'GET',
+                url: 'http://127.0.0.1:8000/api/giveaway/',
+                params: {
+                    is_archived,
+                    q,
+                    cost__gt,
+                }
+            }).then(response => {
+                setPaidGiveaways(response.data)
+            }),
+
+        ])
     }, [])
 
+    const first_free = giveaways[0]
+    const first_paid = paidGiveaways[0]
+
+    console.log([first_free])
     return (
         <div>
             <div className={classes.back_giveaway}>
@@ -63,19 +100,17 @@ function MainContent() {
                     <div className={classNames('row', classes.z_giveaway)}>
                         <div className='col'>
                             <div className={classes.free_giveaway}>
-                                <img src="https://9to5mac.com/wp-content/uploads/sites/6/2020/10/Survivor-Giveaway-Banner-V2.jpg?quality=82&strip=all" />
+                            <img src={first_free?.image}></img>
+                                <button>Participate</button>
+
                             </div>
-                            <span>
-                                00:00:00
-                    </span>
                         </div>
                         <div className='col'>
                             <div className={classes.paid_giveaway}>
-                                <img src="https://www.republiclab.com/wp-content/uploads/2019/02/samsung-s10-giveaway.jpg" />
+                                <img src={first_paid?.image}></img>
+                                <button>Participate</button>
                             </div>
-                            <span>
-                                00:00:00
-                    </span>
+
                         </div>
                     </div>
                 </div>

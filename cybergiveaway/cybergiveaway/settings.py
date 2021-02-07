@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'giveaway.apps.GiveawayConfig',
     'corsheaders',
-    'axes'
+    'django_filters',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -57,6 +57,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
 }
 
 MIDDLEWARE = [
@@ -155,4 +158,4 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'cybergiveaway/static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROTT = os.path.join(BASE_DIR, 'client/build/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'cybergiveaway/media')

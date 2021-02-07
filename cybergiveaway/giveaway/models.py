@@ -6,7 +6,7 @@ class Giveaway(models.Model):
     title = models.CharField(verbose_name='Title', max_length=100)
     description = models.TextField(verbose_name='Description', max_length=600)
     cost = models.IntegerField(verbose_name='Cost', default=0)
-    image = models.FileField(upload_to='images/giveaways')
+    image = models.FileField(upload_to='media/images/giveaways')
     created_at = models.DateTimeField(auto_now_add=True)
     is_archived = models.BooleanField(default=False)
 
@@ -24,7 +24,7 @@ class Item(models.Model):
 
 class ItemImage(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    images = models.ImageField(upload_to='images/items')
+    images = models.ImageField(upload_to='media/images/items')
 
     def __str__(self):
         if self.item:

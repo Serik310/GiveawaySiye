@@ -64,7 +64,7 @@ const Profile = (props) => {
                                     </div>
                                     <div className="col-sm-9 text-secondary">
                                         {values.phone}
-                    </div>
+                                    </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-3">

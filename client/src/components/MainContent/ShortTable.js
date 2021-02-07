@@ -7,18 +7,23 @@ function ShortTable(props) {
 
     const classes = UseStyles();
 
-    const [shortTable, setShortTable] = useState([]);
+    const [giveawayHistory, setGiveawaysHistory] = useState([])
 
     useEffect(() => {
+        const is_archived = true;
+        //q = ordering//
+        const q = '-id';
         axios({
             method: 'GET',
-            url: 'http://127.0.0.1:8000/api/history/',
-        }).then(response => (
-            setShortTable(response.data)
-        )
-        )
+            url: 'http://127.0.0.1:8000/api/giveaway/',
+            params: {
+                is_archived,
+                q,
+            }
+        }).then(response => {
+            setGiveawaysHistory(response.data)
+        })
     }, [])
-
 
     return (
         <div className='col-8'>
@@ -36,11 +41,11 @@ function ShortTable(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {shortTable.map(p => {
+                            {giveawayHistory.map(p => {
                                 return(
                                 <tr>
                                     <th scope="row">{p.id}</th>
-                                    <td className={classes.short_table}><img src="" /></td>
+                                    <td className={classes.short_table}><img src={p.image} /></td>
                                     <td key={p.id}>{p.title}</td>
                                     <td>{p.created_at}</td>
                                     <td>{p.winner}</td>
